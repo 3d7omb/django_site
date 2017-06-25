@@ -1,6 +1,13 @@
+import urllib
+import urllib2
+import json
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.conf import settings
+from django.contrib import messages
+
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
@@ -63,10 +70,24 @@ def add_comment_to_post(request, pk):
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.save()
-            return redirect('post_detail', pk=post.pk)
+            '''reCAPTCHA validation'''
+            recaptcha_response = request.POST.get('g-recaptcha-response')
+            url = 'https://www.google.com/recaptcha/api/siteverify'
+            values = { 'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY, 'response': recaptcha_response }
+            data = urllib.urlencode(values)
+            req = urllib2.Request(url, data)
+            response = urllib2.urlopen(req)
+            result = json.load(response)
+
+            if result['success']:
+                comment = form.save(commit=False)
+                comment.post = post
+                comment.save()
+                return redirect('post_detail', pk=post.pk)
+            else:
+                comment = form.save(commit=False)
+                return render(request, 'blog/add_comment_to_post.html', {'form': form})
+
     else:
         form = CommentForm()
     return render(request, 'blog/add_comment_to_post.html', {'form': form})
