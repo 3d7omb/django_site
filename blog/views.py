@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.conf import settings
 from django.contrib import messages
+from tinymce.widgets import TinyMCE
 
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
