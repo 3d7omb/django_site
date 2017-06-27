@@ -14,8 +14,8 @@
     margin-left: 40px;
 }
 
-h1, h2, h3, h4 {
-    font-family: 'Lobster', cursive;
+html * {
+    font-family: 'Ubuntu', sans-serif; !important;
 }
 
 .top-greeting {
@@ -52,3 +52,4 @@ h1, h2, h3, h4 {
 
 .comment {
     margin: 20px 0px 20px 20px;
+}
