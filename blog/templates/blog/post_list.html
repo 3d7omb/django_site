@@ -7,9 +7,9 @@
                 <p>published: {{ post.published_date }}</p>
             </div>
             <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-            <p>{% autoescape off %}
-            {{ post.text|truncatechars:500|linebreaksbr }}
-            {% endautoescape %}</p>
+            {% autoescape off %}
+            <div class="expandable">{{ post.text|linebreaksbr }}</div>
+            {% endautoescape %}
         </div>
         <hr>
     {% endfor %}
