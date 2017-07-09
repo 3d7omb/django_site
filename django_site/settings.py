@@ -25,7 +25,7 @@ SECRET_KEY = 'tdpp45gs0_nhn2s*qi&m+x$@eg+ehd=tp854&np$l!3gp!8(()'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['blog.3d7omb.co.uk']
+ALLOWED_HOSTS = ['dev.3d7omb.co.uk']
 
 
 # Application definition
@@ -77,10 +77,8 @@ WSGI_APPLICATION = 'django_site.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog',
-        'USER': 'blog_user',
-        'PASSWORD': 'Ev3ntH0riZon'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
