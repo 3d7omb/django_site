@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1>Unapproved comments</h1>
+    {% for comment in comments %}
+        <div class="post">
+            <h3><a href="{% url 'post_detail' pk=comment.post_id %}">{{ comment.post }}</a></h3>
+            <p><b>{{ comment.author }}: </b>{{ comment.text }}</p>
+            <p class="date">
+                created: {{ comment.created_date | date:"d/m/Y" }}
+                <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                <a class="btn btn-defaul" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+            </p>
+        </div>
+    {% empty %}
+        <div class="post">
+            <p>No unapproved comments at this time...</p>
+        </div>
+    {% endfor %}
+{% endblock %}

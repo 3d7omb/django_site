@@ -98,10 +98,21 @@ def add_comment_to_post(request, pk):
 def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.approve()
-    return redirect('post_detail', pk=comment.post.pk)
+    referer = request.META.get('HTTP_REFERER')
+    if referer.find('approve') != -1:
+        comments = Comment.objects.filter(approved_comment=False).order_by('created_date')
+        return render(request, 'blog/comment_draft_list.html', {'comments': comments})
+    else:
+        return redirect('post_detail', pk=comment.post.pk)
 
 @login_required
 def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
     return redirect('post_detail', pk=comment.post.pk)
+
+
+@login_required
+def comment_draft_list(request):
+    comments = Comment.objects.filter(approved_comment=False).order_by('created_date')
+    return render(request, 'blog/comment_draft_list.html', {'comments': comments})
